@@ -1,0 +1,5 @@
+﻿<html>
+	<body>
+		<h1>Node @Model.Node</h1>
+	</body>
+</html>

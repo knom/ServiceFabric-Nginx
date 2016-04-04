@@ -1,0 +1,30 @@
+@model NginxService.ConfigurationTemplate
+
+worker_processes  1;
+
+events {
+	worker_connections  1024;
+}
+
+http {
+	sendfile        on;
+	keepalive_timeout  65;
+
+	server {
+		listen       @Model.Endpoints.First().Port;
+		server_name  localhost;
+
+		location / {
+			root @Model.RootFolder/html/;
+			index node.html;
+		}
+
+		location /some/path/ {
+			proxy_pass http://www.example.com/link/;
+		}	
+		
+		location /blog/ {
+			proxy_pass http://blog.knor.net/;
+		}
+	}
+}
