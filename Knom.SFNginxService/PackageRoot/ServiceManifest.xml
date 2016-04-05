@@ -14,7 +14,7 @@
   <CodePackage Name="Code" Version="1.0.0">
     <EntryPoint>
       <ExeHost>
-        <Program>NginxService.exe</Program>
+        <Program>Knom.SFNginxService.exe</Program>
       </ExeHost>
     </EntryPoint>
   </CodePackage>

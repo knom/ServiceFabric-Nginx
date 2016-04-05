@@ -1,5 +1,7 @@
 ﻿<html>
 	<body>
-		<h1>Node @Model.Node</h1>
+		<h1>Welcome!</h1>
+		<p>This is Microsoft Service Fabric - running NGINX</p>
+		<p>You're on Service Fabric Node <b>@Model.Node</b></p>
 	</body>
 </html>

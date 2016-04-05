@@ -1,4 +1,4 @@
-@model NginxService.ConfigurationTemplate
+@model dynamic
 
 worker_processes  1;
 
@@ -11,7 +11,7 @@ http {
 	keepalive_timeout  65;
 
 	server {
-		listen       @Model.Endpoints.First().Port;
+		listen       @Model.Endpoints[0].Port;
 		server_name  localhost;
 
 		location / {
@@ -20,11 +20,17 @@ http {
 		}
 
 		location /some/path/ {
-			proxy_pass http://www.example.com/link/;
+			proxy_pass fabric:/Knom.ServiceFabricDemo2/RestFrontend/;
+			rewrite /some/path/(.*) /$1  break;
+			proxy_redirect     off;
+			proxy_set_header   Host $host;
 		}	
 		
 		location /blog/ {
-			proxy_pass http://blog.knor.net/;
+			proxy_pass fabric:/Knom.ServiceFabricDemo2/RestFrontend/;
+			rewrite /blog/(.*) /$1  break;
+			proxy_redirect     off;
+			proxy_set_header   Host $host;
 		}
 	}
 }

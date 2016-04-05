@@ -8,29 +8,32 @@ namespace Knom.SFNginxService
 {
     public class NginxCommunicationListener: ICommunicationListener
     {
-        private readonly NginxService _nginxService;
+        private readonly IKillExeProcess _process;
+        private readonly StatelessServiceContext _context;
         private readonly EndpointResourceDescription _endpoint;
 
-        public NginxCommunicationListener(string endpointName, NginxService nginxService)
+        public NginxCommunicationListener(string endpointName, IKillExeProcess process, StatelessServiceContext context)
         {
-            _nginxService = nginxService;
-            _endpoint = FabricRuntime.GetActivationContext().GetEndpoint(endpointName);
+            _process = process;
+            _context = context;
+
+            _endpoint = _context.CodePackageActivationContext.GetEndpoint(endpointName);
         }
 
         public Task<string> OpenAsync(CancellationToken cancellationToken)
         {
-            return Task.FromResult($"{FabricRuntime.GetNodeContext().IPAddressOrFQDN}:{_endpoint.Port}");
+            return Task.FromResult($"{_context.NodeContext.IPAddressOrFQDN}:{_endpoint.Port}");
         }
 
         public Task CloseAsync(CancellationToken cancellationToken)
         {
-            _nginxService.Process?.Kill();
+            _process.KillProcess();
             return Task.FromResult(0);
         }
 
         public void Abort()
         {
-            _nginxService.Process?.Kill();
+            _process.KillProcess();
         }
     }
 }
